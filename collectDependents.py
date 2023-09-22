@@ -30,6 +30,4 @@ with open(DATA_PATH, "rb") as f:
            saveDependents(repo["owner"],repo["name"],dep)
         except Exception as e:
             print(Exception, e)
-        finally:
-            pass
 pbar.close()
