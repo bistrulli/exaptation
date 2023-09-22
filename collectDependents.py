@@ -23,6 +23,7 @@ pbar = tqdm(total=3152515,miniters=1)
 with open(DATA_PATH, "rb") as f:
     for repo in ijson.items(f, "item"):
         pbar.update(1)
+        pbar.refresh()
         if(isProcessed(repo["owner"],repo["name"])):
             continue
         try:
