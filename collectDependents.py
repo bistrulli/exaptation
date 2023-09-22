@@ -32,5 +32,4 @@ with open(DATA_PATH, "rb") as f:
             print(Exception, e)
         finally:
             pbar.close()
-            break
 pbar.close()
