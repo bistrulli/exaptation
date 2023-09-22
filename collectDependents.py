@@ -20,9 +20,10 @@ def saveDependents(repoOwner,repoName,dep):
 
 DATA_PATH = './repo_metadata.json'
 with open(DATA_PATH, "rb") as f:
-    pbar = tqdm(total=3152515)
+    #pbar = tqdm(total=3152515)
     for repo in ijson.items(f, "item"):
-        pbar.update(1)
+        #pbar.update(1)
+        print(repo["nameWithOwner"])
         if(isProcessed(repo["owner"],repo["name"])):
             continue
         try:
@@ -30,4 +31,4 @@ with open(DATA_PATH, "rb") as f:
            saveDependents(repo["owner"],repo["name"],dep)
         except Exception as e:
             print(Exception, e)
-pbar.close()
+#pbar.close()
