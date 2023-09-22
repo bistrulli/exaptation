@@ -19,16 +19,17 @@ def saveDependents(repoOwner,repoName,dep):
 
 
 DATA_PATH = './repo_metadata.json'
-pbar = tqdm(total=3152515)
+pbar = tqdm(total=3152515,miniters=1)
 with open(DATA_PATH, "rb") as f:
     for repo in ijson.items(f, "item"):
         pbar.update(1)
-        print(repo["nameWithOwner"])
         if(isProcessed(repo["owner"],repo["name"])):
             continue
         try:
            dep=collectDependents(repo["nameWithOwner"])
            saveDependents(repo["owner"],repo["name"],dep)
         except Exception as e:
-            print(Exception, e)
+            if("timed out" not in e):
+                print(Exception, e)
+                break
 pbar.close()
