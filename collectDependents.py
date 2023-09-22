@@ -17,7 +17,7 @@ def saveDependents(repoOwner,repoName,dep):
 
 
 
-DATA_PATH = '/Users/emilio-imt/Desktop/exaptation/repo_metadata.json'
+DATA_PATH = './repo_metadata.json'
 with open(DATA_PATH, "rb") as f:
     for repo in ijson.items(f, "item"):
         if(isProcessed(repo["owner"],repo["name"])):
