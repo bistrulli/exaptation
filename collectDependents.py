@@ -6,7 +6,7 @@ from tqdm import tqdm
 from subprocess import TimeoutExpired
 
 def collectDependents(repo):
-    return subprocess.check_output(["github-dependents-info","--json","--repo",repo],timeout=10)
+    return subprocess.check_output(["github-dependents-info","--json","--repo",repo],timeout=120)
 
 def isProcessed(repoOwner,repoName):
     return Path('./dependents/%s_%s_deps.json'%(repoOwner,repoName)).is_file()
