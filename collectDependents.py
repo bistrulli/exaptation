@@ -31,5 +31,5 @@ with open(DATA_PATH, "rb") as f:
         except Exception as e:
             print(Exception, e)
         finally:
-            pbar.close()
+            #
 pbar.close()
