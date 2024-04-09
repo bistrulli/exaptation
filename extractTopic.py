@@ -30,7 +30,7 @@ def getTopic(text,apiKey=None):
 	try:
 		co = cohere.Client(apiKey,timeout=10)
 		response = co.chat(
-	  		message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}' ? for the json you should strictly follow the following format {{\"main_topics\":[]}}"
+	  		message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}' ? for the json you should strictly follow the following format {{\"main_topics\":[]}}. Please ensure the output is in utf8 and json compliant."
 		)
 		return extractResult(response.text)
 	except TimeoutError as e:
