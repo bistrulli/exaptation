@@ -66,16 +66,16 @@ if __name__ == '__main__':
 	for idx in tqdm(range(repos.shape[0])):
 		repo=repos.iloc[idx]
 		rawtopic=getTopic(text=repo["desc"],apiKey=apiKey)
-
 		if(rawtopic is None):
 			continue
 
-		#rawtopic=rawtopic.replace("\\\"","\"")
 		resobj=None
 		try:
 			resobj=json.loads(rawtopic)
 		except json.decoder.JSONDecodeError as err:
-			raise ValueError(rawtopic)
+			#raise ValueError(rawtopic)
+			rawtopic=rawtopic.replace("\\\"","\"")
+			resobj=json.loads(rawtopic)
 
 		if("main_topics" in resobj):
 			topics+=[[repo["repo"].strip(),",".join(resobj["main_topics"])]]
