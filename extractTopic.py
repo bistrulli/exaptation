@@ -70,7 +70,7 @@ if __name__ == '__main__':
 		if(rawtopic is None):
 			continue
 
-		rawtopic=rawtopic.replace("\\\"","\"")
+		#rawtopic=rawtopic.replace("\\\"","\"")
 		resobj=None
 		try:
 			resobj=json.loads(rawtopic)
