@@ -22,8 +22,7 @@ def extractResult(text):
 		#     groupNum = groupNum + 1
 			
 		#     print ("Group {groupNum} found at {start}-{end}: {group}".format(groupNum = groupNum, start = match.start(groupNum), end = match.end(groupNum), group = match.group(groupNum)))
-
-		return match.group() 
+		return  match.group()
 
 def getTopic(text,apiKey="FtIg4H8aodmqdxUmi3C8FLIBWOPdpEF08uxSa6mz"):
 	#print(text)
@@ -60,7 +59,14 @@ if __name__ == '__main__':
 
 	for idx in tqdm(range(repos.shape[0])):
 		repo=repos.iloc[idx]
-		resobj=json.loads(getTopic(repo["desc"]))
+		rawtopic=getTopic(repo["desc"])
+		rawtopic=rawtopic.replace("\\\"","\"")
+		resobj=None
+		try:
+			resobj=json.loads(rawtopic)
+		except json.decoder.JSONDecodeError as err:
+			raise ValueError(rawtopic)
+
 		if("main_topics" in resobj):
 			topics+=[[repo["repo"].strip(),",".join(resobj["main_topics"])]]
 		else:
