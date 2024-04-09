@@ -67,5 +67,5 @@ if __name__ == '__main__':
 			topics+=[[repo["repo"].strip(),"-"]]
 		df = pd.DataFrame(np.array(topics),columns=["repo","topics"])
 		df.to_csv("out.csv")
-		time.sleep(10)
+		time.sleep(3)
 		
