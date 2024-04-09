@@ -29,7 +29,7 @@ def getTopic(text,apiKey="FtIg4H8aodmqdxUmi3C8FLIBWOPdpEF08uxSa6mz"):
 	#print(text)
 	co = cohere.Client(apiKey)
 	response = co.chat(
-	  message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}'"
+	  message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}' ? for the json you should strictly follow the following format {'main_topics':[]}"
 	)
 	return extractResult(response.text)
 
