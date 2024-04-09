@@ -11,7 +11,7 @@ from tqdm import tqdm
 from pathlib import Path
 
 def extractResult(text):
-	print(f"extracting res from {text}")
+	#print(f"extracting res from {text}")
 	regex = r"\{(.*)\}"
 	matches = re.finditer(regex, text, re.DOTALL)
 
@@ -26,7 +26,7 @@ def extractResult(text):
 		return match.group() 
 
 def getTopic(text,apiKey="FtIg4H8aodmqdxUmi3C8FLIBWOPdpEF08uxSa6mz"):
-	print(text)
+	#print(text)
 	co = cohere.Client(apiKey)
 	response = co.chat(
 	  message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}'"
