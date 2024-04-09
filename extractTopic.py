@@ -27,11 +27,15 @@ def extractResult(text):
 
 def getTopic(text,apiKey=None):
 	#print(text)
-	co = cohere.Client(apiKey)
-	response = co.chat(
-	  message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}' ? for the json you should strictly follow the following format {{\"main_topics\":[]}}"
-	)
-	return extractResult(response.text)
+	try:
+		co = cohere.Client(apiKey,timeout=10)
+		response = co.chat(
+	  		message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}' ? for the json you should strictly follow the following format {{\"main_topics\":[]}}"
+		)
+		return extractResult(response.text)
+	except TimeoutError as e:
+		print("timedout")
+		return None
 
 def getAlreadyAnalyedRepo(repofile="out.csv"):
 	out=Path(repofile)
@@ -62,6 +66,10 @@ if __name__ == '__main__':
 	for idx in tqdm(range(repos.shape[0])):
 		repo=repos.iloc[idx]
 		rawtopic=getTopic(text=repo["desc"],apiKey=apiKey)
+
+		if(rawtopic is None):
+			continue
+
 		rawtopic=rawtopic.replace("\\\"","\"")
 		resobj=None
 		try:
