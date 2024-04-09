@@ -8,9 +8,10 @@ import time
 import re
 import json
 from tqdm import tqdm
+from pathlib import Path
 
 def extractResult(text):
-	#print(f"extracting res from {text}")
+	print(f"extracting res from {text}")
 	regex = r"\{(.*)\}"
 	matches = re.finditer(regex, text, re.DOTALL)
 
@@ -25,26 +26,46 @@ def extractResult(text):
 		return match.group() 
 
 def getTopic(text,apiKey="FtIg4H8aodmqdxUmi3C8FLIBWOPdpEF08uxSa6mz"):
+	print(text)
 	co = cohere.Client(apiKey)
 	response = co.chat(
 	  message=f"Can you extract a list of main topics from the following text and output it in a json format '{text}'"
 	)
 	return extractResult(response.text)
 
-if __name__ == '__main__':
-	desc=pd.read_csv("en_desc.csv",names=["oldidx","repo","desc"],header=0)
-	description=desc["desc"].to_numpy().tolist()
-	repos=desc["repo"].to_numpy().tolist()
+def getAlreadyAnalyedRepo(repofile="out.csv"):
+	out=Path(repofile)
+	if(out.is_file()):
+		repos=pd.read_csv("out.csv")
+		return repos
+	else:
+		print("no previous analyzed repo")
+		return None
 
-	topics=[]
-	for idx,d in enumerate(tqdm(description)):
-		resobj=json.loads(getTopic(d))
+if __name__ == '__main__':
+
+	lastrepo=getAlreadyAnalyedRepo()
+
+	desc=pd.read_csv("en_desc.csv",names=["oldidx","repo","desc"],header=0)
+	desc["repo"]=desc["repo"].apply(lambda x:x.strip())
+	desc["desc"]=desc["desc"].apply(lambda x:x.strip())
+	topics=None
+	repos=None
+	if(lastrepo is not None):
+		repos=desc[~desc["repo"].isin(lastrepo["repo"])]
+		topics=lastrepo[["repo","topics"]].to_numpy().tolist()
+	else:
+		repos=desc
+		topics=[]
+
+	for idx in tqdm(range(repos.shape[0])):
+		repo=repos.iloc[idx]
+		resobj=json.loads(getTopic(repo["desc"]))
 		if("main_topics" in resobj):
-			topics+=[[repos[idx].strip(),",".join(resobj["main_topics"])]]
+			topics+=[[repo["repo"].strip(),",".join(resobj["main_topics"])]]
 		else:
-			topics+=[["",""]]
+			topics+=[[repo["repo"].strip(),"-"]]
 		df = pd.DataFrame(np.array(topics),columns=["repo","topics"])
 		df.to_csv("out.csv")
-		#print(topics[-1])
 		time.sleep(10)
 		

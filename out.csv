@@ -1,110 +1,27 @@
 ,repo,topics
-0,sindresorhus/awesome,"Awesome lists,Interesting topics,Curated collections,Learning and exploration"
+0,sindresorhus/awesome,"Awesome lists,Interesting topics,Curated collections,Resource sharing"
 1,vinta/awesome-python,"Python frameworks,Python libraries,Python software,Python resources"
-2,,
+2,donnemartin/system-design-primer,-
 3,tensorflow/tensorflow,"Open Source,Machine Learning,Framework,Accessibility"
-4,trekhleb/javascript-algorithms,"Algorithms,Data Structures,JavaScript Implementation,Explanations and Readings"
+4,trekhleb/javascript-algorithms,-
 5,codecrafters-io/build-your-own-x,"Programming,Recreating technologies,Learning by doing"
-6,,
-7,30-seconds/30-seconds-of-code,"Code snippets,Development tools,Programming assistance"
-8,axios/axios,"Promise-based HTTP client,Browser compatibility,Node.js compatibility"
-9,facebook/create-react-app,"Web application development,Command-line tools,Modern web app setup"
-10,,
-11,,
-12,kubernetes/kubernetes,"Container Scheduling,Production-Grade,Management"
-13,jlevy/the-art-of-command-line,"Command Line Mastery,Navigation,File Management,File Permissions,Redirection and Piping,Command Sequencing,Environment Configuration,Network Operations,Scripting,Security Considerations"
-14,public-apis/public-apis,"Free APIs,API Lists,API Categories,Data Sources,API Discovery"
-15,f/awesome-chatgpt-prompts,"ChatGPT,Prompt Curation"
+6,vuejs/vue,"Vue 2,Vue 3,Repository,GitHub,vuejs/core"
+7,30-seconds/30-seconds-of-code,"Short code snippets,Development needs"
+8,axios/axios,"Promise based HTTP client,Browser compatibility,Node.js compatibility"
+9,facebook/create-react-app,"Modern web app development,Command-line interface,Ease of setup"
+10,github/gitignore,-
+11,flutter/flutter,-
+12,kubernetes/kubernetes,"Container Scheduling,Management and Orchestration,Production-Grade Containers,Containerization Benefits,Container Ecosystem"
+13,jlevy/the-art-of-command-line,"Command Line Mastery,Navigating Files and Directories,File Operations,Pipes and Redirection,Command Line Tips and Tricks"
+14,public-apis/public-apis,"Free APIs,API Sources,API Listings,API Discovery,API Recommendations"
+15,f/awesome-chatgpt-prompts,"ChatGPT,Prompt Curation,Repo"
 16,facebook/react,"Web user interfaces,Native user interfaces,Libraries"
-17,,
+17,gothinkster/realworld,-
 18,microsoft/terminal,"Windows Terminal,Windows Console Host"
-19,,
-20,,
-21,puppeteer/puppeteer,"Node.js,API,Chrome"
+19,twbs/bootstrap,-
+20,mui/material-ui,"MUI Core,Foundational React Components,Free and Open-Source,Material UI,Google's Material Design"
+21,puppeteer/puppeteer,-
 22,rust-lang/rust,"Empowerment,Reliability,Efficiency,Software Development"
-23,tensorflow/models,"Computer vision and image recognition,Natural Language Processing (NLP) and text analysis,Audio and speech recognition,Generative models and synthesis,Reinforcement learning and agents,Time series and sequential data modeling,Recommendation systems and personalized modeling,Healthcare and medical imaging,Financial applications and prediction,Robotics and control systems"
+23,tensorflow/models,"Computer vision and image recognition,Natural Language Processing (NLP),Audio and speech recognition,Generative models and synthesis,Reinforcement learning and agents,Recommendation systems,Time series and predictive analytics,Healthcare and biology,Finance and economics,Transportation and logistics"
 24,avelino/awesome-go,"Go frameworks,Go libraries,Go software"
 25,kamranahmedse/developer-roadmap,"Interactive roadmaps,Guides,Educational content,Developer career growth"
-26,yangshun/tech-interview-handbook,"Coding interview preparation,Materials for software engineers,Curated resources"
-27,jwasham/coding-interview-university,"Computer Science Fundamentals,Programming Languages,Data Structures and Algorithms,Software Engineering Principles,Database Management,Operating Systems,Computer Networks,Software Development Lifecycle,Version Control,Testing and Debugging,Security and Privacy"
-28,,
-29,,
-30,,
-31,facebook/react-native,"React,Native Applications,Framework for Building,Application Development"
-32,,
-33,,
-34,golang/go,"Go programming language,Syntax and Structure,Packages and Imports,Variables and Data Types,Functions and Control Flow,Concurrency and Parallelism,Error Handling,Standard Library,Testing and Debugging,Performance and Optimization"
-35,,
-36,,
-37,denoland/deno,"JavaScript Runtime,TypeScript Runtime,Modern Runtime Features"
-38,ryanmcdermott/clean-code-javascript,":bathtub: Clean Code Concepts,Adaptations for JavaScript,JavaScript Best Practices,Formatting and Readability,Variables and Functions,Comments and Documentation,Modularity and Separation of Concerns,Error Handling and Testing,Performance Optimization,Collaborative Coding and Code Reviews"
-39,,
-40,,
-41,,
-42,mtdvio/every-programmer-should-know,"Software Development,Version Control,Programming Languages,Web Development,Databases,Software Architecture,Testing and Debugging,Security,Machine Learning and AI,Soft Skills for Developers"
-43,,
-44,,
-45,,
-46,,
-47,,
-48,ant-design/ant-design,"UI design language,React UI library"
-49,typicode/json-server,"Fake REST API,Zero Coding,Speed (less than 30 seconds)"
-50,,
-51,iluwatar/java-design-patterns,"Design Patterns,Java,Software Design,Object-Oriented Programming,Gang of Four,Design Principles,Reusability,Maintainability"
-52,mrdoob/three.js,"JavaScript,3D Graphics,Web Graphics Libraries,Rendering,Animation,WebGL,Three.js,WebXR"
-53,,
-54,florinpop17/app-ideas,"Application ideas,Improving coding skills,Practice projects"
-55,neovim/neovim,"Vim-fork,extensibility,usability"
-56,pytorch/pytorch,"Tensors,Dynamic neural networks,Python programming language,GPU acceleration"
-57,angular/angular,"Web Development,Modern Web Technologies,Developer Tools,Web Performance,Security,User Experience,Design,Coding Practices"
-58,,
-59,nvm-sh/nvm,"Node Version Manager,POSIX-compliant bash script,managing multiple active Node.js versions"
-60,bitcoin/bitcoin,"Bitcoin Core,integration,staging tree"
-61,,
-62,tauri-apps/tauri,"Desktop application development,Web frontend integration,Performance optimization,Security"
-63,opencv/opencv,"Open Source,Computer Vision,Library"
-64,fatedier/frp,"reverse proxy,local server exposure,NAT and firewall bypass,internet accessibility"
-65,,
-66,apple/swift,"Introduction to Swift,Basic Grammar and Syntax,Variables and Constants,Data Types and Collections,Control Flow and Loops,Functions and Closures,Structures and Classes,Enumerations and Switch,Protocols and Extensions,Error Handling and Exceptions"
-67,jaywcjlove/awesome-mac,"Growth and Change,Diversification,Premium Software Collection"
-68,,
-69,reduxjs/redux,"Predictable state container,JavaScript apps"
-70,josephmisiti/awesome-machine-learning,"Machine Learning frameworks,Machine Learning libraries,Machine Learning software"
-71,,
-72,angular/angular.js,"AngularJS,HTML,Web Applications,Enhancements"
-73,keras-team/keras,"Deep Learning,Neural Networks,Machine Learning,Artificial Intelligence,Data Science,Computer Vision,Natural Language Processing,Reinforcement Learning"
-74,,
-75,godotengine/godot,"Godot Engine,Multi-platform,2D game engine,3D game engine"
-76,protocolbuffers/protobuf,"Protocol Buffers,Data Interchange Format,Google's Implementation,Binary Serialization,Efficiency and Flexibility"
-77,,
-78,,
-79,,
-80,mermaid-js/mermaid,"Diagram generation,Text-to-diagram conversion,Flowcharts,Sequence diagrams,Markdown-like syntax for diagram generation"
-81,twitter/the-algorithm,"Source code,Twitter's Recommendation Algorithm"
-82,,
-83,socketio/socket.io,"Realtime application framework,Node.JS,Servers"
-84,,
-85,,
-86,,
-87,ansible/ansible,"IT automation platform,Ansible features and benefits,Code deployment automation,Network configuration automation,Cloud management automation,Plain English-like syntax,SSH-based,Agentless architecture"
-88,netdata/netdata,"Server Monitoring,Container Monitoring,Application Monitoring,Real-time Monitoring,High-Resolution Monitoring"
-89,adam-p/markdown-here,"Email extensions,Markdown support,Email composition and rendering,Cross-platform compatibility (Google Chrome, Firefox, Thunderbird)"
-90,python/cpython,Python programming language
-91,,
-92,,
-93,,
-94,,
-95,,
-96,,
-97,yt-dlp/yt-dlp,"youtube-dl fork,additional features,fixes and improvements"
-98,,
-99,jquery/jquery,jQuery JavaScript Library
-100,h5bp/html5-boilerplate,"front-end template,web development,fast web apps,robust web apps,adaptable web apps"
-101,shadowsocks/shadowsocks-windows,"C# port,shadowsocks"
-102,leonardomso/33-js-concepts,"JavaScript Concepts,Variables and Data Types,Operators and Assignments,Conditionals and Loops,Functions and Methods,Arrays and Objects,Classes and Constructors,Inheritance and Prototypes,Asynchronous Programming,Error Handling"
-103,,
-104,supabase/supabase,"Open source,Firebase alternative,Public Beta"
-105,redis/redis,"Redis_as_an_in-memory_database,Data_persistence_on_disk,Key-value_data_model,Supported_data_types"
-106,gatsbyjs/gatsby,"Frontend development,Headless web,React,Modern web development"
-107,remix-run/react-router,"Declarative Routing,React,Routing Libraries,URL Handling,Component Rendering,Navigation Control"
-108,google/material-design-icons,"Material Design,Icons,Google"
