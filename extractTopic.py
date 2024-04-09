@@ -9,6 +9,7 @@ import re
 import json
 from tqdm import tqdm
 from pathlib import Path
+import os
 
 def extractResult(text):
 	#print(f"extracting res from {text}")
@@ -24,7 +25,7 @@ def extractResult(text):
 		#     print ("Group {groupNum} found at {start}-{end}: {group}".format(groupNum = groupNum, start = match.start(groupNum), end = match.end(groupNum), group = match.group(groupNum)))
 		return  match.group()
 
-def getTopic(text,apiKey="FtIg4H8aodmqdxUmi3C8FLIBWOPdpEF08uxSa6mz"):
+def getTopic(text,apiKey=None):
 	#print(text)
 	co = cohere.Client(apiKey)
 	response = co.chat(
@@ -44,6 +45,7 @@ def getAlreadyAnalyedRepo(repofile="out.csv"):
 if __name__ == '__main__':
 
 	lastrepo=getAlreadyAnalyedRepo()
+	apiKey=os.getenv('COHERE_KEY')
 
 	desc=pd.read_csv("en_desc.csv",names=["oldidx","repo","desc"],header=0)
 	desc["repo"]=desc["repo"].apply(lambda x:x.strip())
@@ -59,7 +61,7 @@ if __name__ == '__main__':
 
 	for idx in tqdm(range(repos.shape[0])):
 		repo=repos.iloc[idx]
-		rawtopic=getTopic(repo["desc"])
+		rawtopic=getTopic(text=repo["desc"],apiKey=apiKey)
 		rawtopic=rawtopic.replace("\\\"","\"")
 		resobj=None
 		try:
