@@ -74,6 +74,7 @@ if __name__ == '__main__':
 			resobj=json.loads(rawtopic)
 		except json.decoder.JSONDecodeError as err:
 			#raise ValueError(rawtopic)
+			print(rawtopic)
 			rawtopic=rawtopic.replace("\\\"","\"")
 			resobj=json.loads(rawtopic)
 
