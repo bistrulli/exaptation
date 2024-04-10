@@ -46,6 +46,18 @@ def getAlreadyAnalyedRepo(repofile="out.csv"):
 		print("no previous analyzed repo")
 		return None
 
+def correctJsonObject(text,apiKey=None):
+	try:
+		co = cohere.Client(apiKey,timeout=10)
+		response = co.chat(
+	  		message=f"can you make the following text a valid json object? {text}"
+		)
+		return extractResult(response.text)
+	except TimeoutError as e:
+		print("timedout")
+		return None
+
+
 if __name__ == '__main__':
 
 	lastrepo=getAlreadyAnalyedRepo()
@@ -75,8 +87,9 @@ if __name__ == '__main__':
 		except json.decoder.JSONDecodeError as err:
 			#raise ValueError(rawtopic)
 			print(rawtopic)
-			rawtopic=rawtopic.replace("\\\"","\"")
-			resobj=json.loads(rawtopic)
+			rawtopic=correctJsonObject(text=rawtopic,apiKey=apiKey)
+			raise ValueError(rawtopic)
+			r#esobj=json.loads(rawtopic)
 
 		if("main_topics" in resobj):
 			topics+=[[repo["repo"].strip(),",".join(resobj["main_topics"])]]
