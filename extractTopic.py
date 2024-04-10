@@ -85,11 +85,9 @@ if __name__ == '__main__':
 		try:
 			resobj=json.loads(rawtopic)
 		except json.decoder.JSONDecodeError as err:
-			#raise ValueError(rawtopic)
 			print(rawtopic)
 			rawtopic=correctJsonObject(text=rawtopic,apiKey=apiKey)
-			raise ValueError(rawtopic)
-			r#esobj=json.loads(rawtopic)
+			resobj=json.loads(rawtopic)
 
 		if("main_topics" in resobj):
 			topics+=[[repo["repo"].strip(),",".join(resobj["main_topics"])]]
