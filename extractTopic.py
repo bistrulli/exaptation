@@ -91,7 +91,10 @@ if __name__ == '__main__':
 			if(rawtopic is None):
 				print("skipped")
 				continue
-			resobj=json.loads(rawtopic)
+			try:
+				resobj=json.loads(rawtopic)
+			except Exception as e:
+				continue
 
 		if("main_topics" in resobj):
 			topics+=[[repo["repo"].strip(),",".join(resobj["main_topics"])]]
