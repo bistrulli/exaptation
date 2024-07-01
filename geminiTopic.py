@@ -22,7 +22,7 @@ def initApi():
 	genai.configure(api_key=GOOGLE_API_KEY)
 
 def parseTopic(rawtopics):
-	rawtopics = rawtopics.candidates[0].content.text
+	rawtopics = "".join([part.text for part in response.candidates[0].content.parts])
 	topics=[]
 	try:
 		topics=json.loads(re.findall(r"\{.*\}",rawtopics)[0])["main_topics"]
