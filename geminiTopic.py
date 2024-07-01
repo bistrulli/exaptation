@@ -54,6 +54,9 @@ async def processParallel(num_chunks,desc,q):
 				tasks+=[asyncio.create_task(getTopics(model,desc.iloc[idx]["desc"],desc.iloc[idx]["repo"],q))]
 			await asyncio.gather(*tasks)
 
+		if(chunk>30):
+			break
+
 
 def convertTopicDF(q):
 	topicsLen=q.qsize();
