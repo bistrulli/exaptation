@@ -15,6 +15,7 @@ from datetime import datetime
 
 num_processors = os.cpu_count()*10
 model=None
+data=[]
 
 def initApi():
 	GOOGLE_API_KEY=var = os.environ['GOOGLE_API_KEY']
@@ -32,40 +33,43 @@ def parseTopic(rawtopics):
 async def getTopics(model,descr,repo=None,queue=None):
 	ques=f"Can you extract a list of main topics from the following text and output it in  a json format ? for the json you should strictly follow the following format {{\"main_topics\":[]}}. Please ensure the output is in UTF-8 and json compliant. Please try to extract topic synthetic as possible. Here is the text from which extract topics: '{descr}'"
 	resp = await model.generate_content_async(ques)
-	topics=parseTopic(resp)
-	if(queue is not None):
-		queue.put([repo]+[topics])
-	return topics
+	return resp
 
-async def processParallel(num_chunks,desc,q):
+async def processParallel(num_chunks,desc):
+	global data
 	for chunk in tqdm(range(1,num_chunks+1)):
-		#print(f"{(chunk-1)*num_processors},{(chunk-1)*num_processors+num_processors}")
 		tasks=[]
+		repos=[]
 		for idx in range((chunk-1)*num_processors,(chunk-1)*num_processors+num_processors):
+			repos+=[desc.iloc[idx]["repo"]]
 			tasks+=[asyncio.create_task(getTopics(model,desc.iloc[idx]["desc"],desc.iloc[idx]["repo"],q))]
 		try:
-			await asyncio.gather(*tasks)
+			results=await asyncio.gather(*tasks) 
+			for repo,r in zip(repos,results):
+				topics=parseTopic(r)
+				data+=[[repo,",".join(topics)]]
 		except:
 			#raise ValueError("Error")
 			print(f"waiting {datetime.now()}")
 			time.sleep(60)
+
 			tasks=[]
+			repos=[]
 			for idx in range((chunk-1)*num_processors,(chunk-1)*num_processors+num_processors):
+				repos+=[desc.iloc[idx]["repo"]]
 				tasks+=[asyncio.create_task(getTopics(model,desc.iloc[idx]["desc"],desc.iloc[idx]["repo"],q))]
-			await asyncio.gather(*tasks)
+			
+			results=await asyncio.gather(*tasks) 
+			for repo,r in zip(repos,results):
+				topics=parseTopic(r)
+				data+=[[repo,",".join(topics)]]
 
 		if(chunk>30):
 			break
 
 
-def convertTopicDF(q):
-	topicsLen=q.qsize();
-	topics=[]
-	for _ in range(topicsLen):
-		tp=q.get()
-		topics+=[[tp[0],", ".join(tp[1])]]
-
-	df = pd.DataFrame(np.array(topics),columns=["repo","topics"])
+def convertTopicDF():
+	df = pd.DataFrame(np.array(data),columns=["repo","topics"])
 	df.to_csv("geminiTopics.csv")
 
 if __name__ == '__main__':
@@ -79,6 +83,6 @@ if __name__ == '__main__':
 	q = queue.Queue()
 	num_chunks = len(desc) // num_processors
 	st=time.time()
-	asyncio.run(processParallel(num_chunks,desc,q))
-	convertTopicDF(q)
+	asyncio.run(processParallel(num_chunks,desc))
+	convertTopicDF()
 
