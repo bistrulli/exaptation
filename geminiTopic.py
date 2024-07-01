@@ -65,8 +65,8 @@ async def processParallel(num_chunks,desc):
 				topics=parseTopic(r)
 				data+=[[repo,",".join(topics)]]
 
-		if(chunk>30):
-			break
+		finally:
+			convertTopicDF()
 
 
 def convertTopicDF():
@@ -85,5 +85,5 @@ if __name__ == '__main__':
 	num_chunks = len(desc) // num_processors
 	st=time.time()
 	asyncio.run(processParallel(num_chunks,desc))
-	convertTopicDF()
+	#convertTopicDF()
 
