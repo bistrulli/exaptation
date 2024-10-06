@@ -32,9 +32,13 @@ def parseTopic(rawtopics):
 		return topics
 
 async def getTopics(model,descr,repo=None,queue=None):
+	#impostare il valore della temperatura dalle API per cercare di rendere il più possible riproducibile i risultati
 	ques=f"Can you extract a list of main topics from the following text and output it in  a json format ? for the json you should strictly follow the following format {{\"main_topics\":[]}}. Please ensure the output is in UTF-8 and json compliant. Please try to extract topic synthetic as possible. Here is the text from which extract topics: '{descr}'"
 	resp = await model.generate_content_async(ques)
 	return resp
+
+def normalizeTopics(model,):
+	 quest=f"Can you "
 
 async def processParallel(num_chunks,desc):
 	global data
