@@ -3,8 +3,9 @@ import base64
 from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
+import os
 
-def getReadme(owner,repo,outdir="./Readme",token = "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"):
+def getReadme(owner,repo,outdir="./Readme",token=None):
     url = f"https://api.github.com/repos/{owner}/{repo}/readme"
     headers = {
         "Accept": "application/vnd.github.v3+json",
@@ -21,9 +22,12 @@ def getReadme(owner,repo,outdir="./Readme",token = "ghp_mFZ6xcDyf9r4Wen2uI1lOQB6
     else:
         print(f"Failed to fetch README.md: {response.status_code}")
 
+
+gittoken=os.getenv('GITTOKEN')
+
 desc=pd.read_csv("en_desc.csv")
 for i in tqdm(range(desc.shape[0])): 
     owner=desc.iloc[i]["id"].split("/")[0].strip()
     repo=desc.iloc[i]["id"].split("/")[1].strip()
-    getReadme(owner=owner,repo=repo)
+    getReadme(owner=owner,repo=repo,token=gittoken)
 
