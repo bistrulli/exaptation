@@ -29,5 +29,7 @@ desc=pd.read_csv("en_desc.csv")
 for i in tqdm(range(desc.shape[0])): 
     owner=desc.iloc[i]["id"].split("/")[0].strip()
     repo=desc.iloc[i]["id"].split("/")[1].strip()
+    if(Path(f"./Readme/{owner}_{repo}.md")):
+        continue
     getReadme(owner=owner,repo=repo,token=gittoken)
 
