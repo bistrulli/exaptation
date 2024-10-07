@@ -20,7 +20,7 @@ def getReadme(owner,repo,outdir="./Readme",token=None):
         p_file.parent.mkdir(parents=True, exist_ok=True)
         p_file.write_text(readme_content, encoding ="utf-8")
     else:
-        print(f"Failed to fetch README.md: {response.status_code}")
+        print(f"Failed to fetch https://api.github.com/repos/{owner}/{repo}/readme: {response.status_code} ")
 
 
 gittoken=os.getenv('GITTOKEN')
