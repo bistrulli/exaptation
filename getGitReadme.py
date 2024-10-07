@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 from tqdm import tqdm
 import os
+import time
 
 def getReadme(owner,repo,outdir="./Readme",token=None):
     url = f"https://api.github.com/repos/{owner}/{repo}/readme"
@@ -27,6 +28,8 @@ def getReadme(owner,repo,outdir="./Readme",token=None):
         print(f"Failed to fetch https://api.github.com/repos/{owner}/{repo}/readme: {response.status_code} ")
         print(response.text)
         print(response.headers)
+    time.sleep(0.75)
+
 
 
 gittoken=os.getenv('GITTOKEN')
