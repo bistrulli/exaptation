@@ -25,6 +25,7 @@ def getReadme(owner,repo,outdir="./Readme",token=None):
             print(e)
     else:
         print(f"Failed to fetch https://api.github.com/repos/{owner}/{repo}/readme: {response.status_code} ")
+        print(response.text)
 
 
 gittoken=os.getenv('GITTOKEN')
