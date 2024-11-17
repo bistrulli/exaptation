@@ -89,6 +89,7 @@ def getTopicEmbedding(topicsdf=None):
 	)
 
 	# Print the embeddings
+	print(embeddings)
 	for i, embedding in enumerate(embeddings.embeddings):
 	    print(f"Embedding for '{words[i]}': {embedding.value}")
 
