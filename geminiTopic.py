@@ -78,9 +78,11 @@ def convertTopicDF():
 	df = pd.DataFrame(np.array(data),columns=["repo","topics"])
 	df.to_csv("geminiTopics.csv")
 
-def getTopicEmbedding(topicsdf=None):
+def getTopicEmbedding(repo=None):
 	# Your list of words
-	words = ["hello", "world", "Gemini", "embeddings"]
+	words = repo["topics"].values
+	print(words)
+
 
 	# Generate embeddings for the list of words
 	embeddings = genai.embed_content(
@@ -106,8 +108,7 @@ if __name__ == '__main__':
 	#convertTopicDF()
 	topics=pd.read_csv("geminiTopics.csv")
 	for i in range(topics.shape[0]):
-		#getTopicEmbedding()
 		repo=topics.iloc[i]
-		print(repo)
+		getTopicEmbedding(repo=repo)
 		break
 
