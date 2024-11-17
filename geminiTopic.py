@@ -116,7 +116,8 @@ if __name__ == '__main__':
 		analyzed_embenddings+=embeddings
 		print(words)
 		print(np.array(analyzed_embenddings).shape)
-		results_embedding=pd.DataFrame(np.array([analyzed_topics,results_embenddings]),columns=["repo","topics"])
+		# Create a list of dictionaries with 'repo' and 'topics' keys
+		results_embedding=pd.DataFrame([{'topic': analyzed_topics, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
 		print(results_embedding)
 		break
 
