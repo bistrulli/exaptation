@@ -105,8 +105,9 @@ if __name__ == '__main__':
 	#asyncio.run(processParallel(num_chunks,desc))
 	#convertTopicDF()
 	topics=pd.read_csv("geminiTopics.csv")
-	for repo in topics:
+	for i in range(topics.shape[0]):
 		#getTopicEmbedding()
+		repo=topics.iloc[i]
 		print(repo)
 		break
 
