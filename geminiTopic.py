@@ -19,7 +19,6 @@ data=[]
 
 def initApi():
 	GOOGLE_API_KEY=var = os.environ['GOOGLE_API_KEY']
-	print(GOOGLE_API_KEY)
 	genai.configure(api_key=GOOGLE_API_KEY)
 
 def parseTopic(rawtopics):
@@ -81,17 +80,17 @@ def convertTopicDF():
 def getTopicEmbedding(repo=None):
 	# Your list of words
 	words = repo["topics"].split(",")
-	print(words)
-
 
 	# Generate embeddings for the list of words
 	embeddings = genai.embed_content(
 	    model="models/text-embedding-004",
 	    content=words
 	)
-
 	for i, embedding in enumerate(embeddings["embedding"]):
 	    print(f"Embedding for '{words[i]}': {embedding}")
+
+	return words, embeddings["embedding"]
+
 
 if __name__ == '__main__':
 	initApi()
@@ -109,6 +108,8 @@ if __name__ == '__main__':
 	topics=pd.read_csv("geminiTopics.csv")
 	for i in range(topics.shape[0]):
 		repo=topics.iloc[i]
-		getTopicEmbedding(repo=repo)
+		words,embeddings=getTopicEmbedding(repo=repo)
+		print(words)
+		print(np.array(embeddings.shape))
 		break
 
