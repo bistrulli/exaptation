@@ -108,6 +108,7 @@ if __name__ == '__main__':
 	topics=pd.read_csv("geminiTopics.csv")
 	analyzed_topics=[]
 	analyzed_embenddings=[]
+	results_embenddings=[]
 	for i in range(topics.shape[0]):
 		repo=topics.iloc[i]
 		words,embeddings=getTopicEmbedding(repo=repo)
@@ -115,5 +116,7 @@ if __name__ == '__main__':
 		analyzed_embenddings+=embeddings
 		print(words)
 		print(np.array(analyzed_embenddings).shape)
+		results_embedding=pd.DataFrame(np.array([analyzed_topics,results_embenddings]),columns=["repo","topics"])
+		print(results_embedding)
 		break
 
