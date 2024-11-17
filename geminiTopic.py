@@ -109,7 +109,7 @@ if __name__ == '__main__':
 	analyzed_topics=[]
 	analyzed_embenddings=[]
 	results_embenddings=[]
-	for i in range(topics.shape[0]):
+	for i in in tqdm(range(topics.shape[0])):
 		repo=topics.iloc[i]
 		words,embeddings=getTopicEmbedding(repo=repo)
 		analyzed_topics+=words
@@ -117,5 +117,4 @@ if __name__ == '__main__':
 		# Create a list of dictionaries with 'repo' and 'topics' keys
 		results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
 		results_embedding.to_csv("topic_embedding.csv",index=False)
-		break
 
