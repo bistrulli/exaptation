@@ -77,6 +77,21 @@ def convertTopicDF():
 	df = pd.DataFrame(np.array(data),columns=["repo","topics"])
 	df.to_csv("geminiTopics.csv")
 
+def getTopicEmbedding(topicsdf=None):
+	# Your list of words
+	words = ["hello", "world", "Gemini", "embeddings"]
+
+	# Generate embeddings for the list of words
+	embeddings = genai.embed_content(
+	    model="models/text-embedding-004",
+	    content=words,
+	    task_type="text_embedding"
+	)
+
+	# Print the embeddings
+	for i, embedding in enumerate(embeddings.embeddings):
+	    print(f"Embedding for '{words[i]}': {embedding.value}")
+
 if __name__ == '__main__':
 	initApi()
 
@@ -84,10 +99,11 @@ if __name__ == '__main__':
 	desc["repo"]=desc["repo"].apply(lambda x:x.strip())
 	desc["desc"]=desc["desc"].apply(lambda x:x.strip())
 
-	model = genai.GenerativeModel('gemini-1.5-flash')
-	q = queue.Queue()
-	num_chunks = len(desc) // num_processors
-	st=time.time()
-	asyncio.run(processParallel(num_chunks,desc))
+	#model = genai.GenerativeModel('gemini-1.5-flash')
+	#q = queue.Queue()
+	#num_chunks = len(desc) // num_processors
+	#st=time.time()
+	#asyncio.run(processParallel(num_chunks,desc))
 	#convertTopicDF()
+	getTopicEmbedding()
 
