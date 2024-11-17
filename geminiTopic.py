@@ -114,10 +114,8 @@ if __name__ == '__main__':
 		words,embeddings=getTopicEmbedding(repo=repo)
 		analyzed_topics+=words
 		analyzed_embenddings+=embeddings
-		print(words)
-		print(np.array(analyzed_embenddings).shape)
 		# Create a list of dictionaries with 'repo' and 'topics' keys
 		results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
-		print(results_embedding)
+		results_embedding.to_csv("topic_embedding.csv",index=False)
 		break
 
