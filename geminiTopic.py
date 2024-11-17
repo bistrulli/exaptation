@@ -112,7 +112,7 @@ if __name__ == '__main__':
 		repo=topics.iloc[i]
 		words,embeddings=getTopicEmbedding(repo=repo)
 		analyzed_topics+=[words]
-		analyzed_embenddings+=[embeddings]
+		analyzed_embenddings+=embeddings
 		print(words)
 		print(np.array(analyzed_embenddings).shape)
 		break
