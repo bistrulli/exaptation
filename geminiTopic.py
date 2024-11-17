@@ -110,6 +110,6 @@ if __name__ == '__main__':
 		repo=topics.iloc[i]
 		words,embeddings=getTopicEmbedding(repo=repo)
 		print(words)
-		print(np.array(embeddings.shape))
+		print(np.array(embeddings).shape)
 		break
 
