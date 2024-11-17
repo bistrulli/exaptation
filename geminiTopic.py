@@ -80,7 +80,7 @@ def convertTopicDF():
 
 def getTopicEmbedding(repo=None):
 	# Your list of words
-	words = repo["topics"]
+	words = repo["topics"].split(",")
 	print(words)
 
 
