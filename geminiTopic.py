@@ -88,8 +88,6 @@ def getTopicEmbedding(topicsdf=None):
 	    content=words
 	)
 
-	# Print the embeddings
-	print(embeddings)
 	for i, embedding in enumerate(embeddings["embedding"]):
 	    print(f"Embedding for '{words[i]}': {embedding}")
 
@@ -106,5 +104,9 @@ if __name__ == '__main__':
 	#st=time.time()
 	#asyncio.run(processParallel(num_chunks,desc))
 	#convertTopicDF()
-	getTopicEmbedding()
+	topics=pd.read_csv("geminiTopics.csv")
+	for repo in topics:
+		#getTopicEmbedding()
+		print(repo)
+		break
 
