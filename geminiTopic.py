@@ -109,7 +109,7 @@ if __name__ == '__main__':
 	analyzed_topics=[]
 	analyzed_embenddings=[]
 	results_embenddings=[]
-	for i in in tqdm(range(topics.shape[0])):
+	for i in tqdm(range(topics.shape[0])):
 		repo=topics.iloc[i]
 		words,embeddings=getTopicEmbedding(repo=repo)
 		analyzed_topics+=words
