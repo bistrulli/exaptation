@@ -84,8 +84,7 @@ def getTopicEmbedding(topicsdf=None):
 	# Generate embeddings for the list of words
 	embeddings = genai.embed_content(
 	    model="models/text-embedding-004",
-	    content=words,
-	    task_type="text_embedding"
+	    content=words
 	)
 
 	# Print the embeddings
