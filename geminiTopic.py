@@ -80,7 +80,9 @@ def convertTopicDF():
 def getTopicEmbedding(repo=None):
 	# Your list of words
 	try:
-		words = repo["topics"].split(",")
+		words=""
+		if(repo["topics"] is not None):
+			words = repo["topics"].split(",")
 
 		# Generate embeddings for the list of words
 		embeddings = genai.embed_content(
