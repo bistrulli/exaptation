@@ -125,4 +125,4 @@ if __name__ == '__main__':
 		# Create a list of dictionaries with 'repo' and 'topics' keys
 		results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
 		results_embedding.to_csv("topic_embedding.csv",index=False)
-
+		time.sleep(1)
