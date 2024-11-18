@@ -83,6 +83,8 @@ def getTopicEmbedding(repo=None):
 		words=["no-tags"]
 		if(repo["topics"] is not None and type(repo["topics"])==str):
 			words = repo["topics"].split(",")
+		else:
+			print(words) 
 
 		# Generate embeddings for the list of words
 		embeddings = genai.embed_content(
