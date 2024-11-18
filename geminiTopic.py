@@ -114,15 +114,20 @@ if __name__ == '__main__':
 	#convertTopicDF()
 
 	topics=pd.read_csv("geminiTopics.csv")
+	#df=pd.read_csv("topic_embedding.csv")
 	analyzed_topics=[]
 	analyzed_embenddings=[]
 	results_embenddings=[]
-	for i in tqdm(range(topics.shape[0])):
-		repo=topics.iloc[i]
-		words,embeddings=getTopicEmbedding(repo=repo)
-		analyzed_topics+=words
-		analyzed_embenddings+=embeddings
+	try:
+		for i in tqdm(range(topics.shape[0])):
+			repo=topics.iloc[i]
+			words,embeddings=getTopicEmbedding(repo=repo)
+			analyzed_topics+=words
+			analyzed_embenddings+=embeddings
+			time.sleep(1)
+	except Exception as e:
+		print(e)
+	finally:
 		# Create a list of dictionaries with 'repo' and 'topics' keys
 		results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
 		results_embedding.to_csv("topic_embedding.csv",index=False)
-		time.sleep(1)
