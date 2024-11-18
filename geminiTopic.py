@@ -80,7 +80,7 @@ def convertTopicDF():
 def getTopicEmbedding(repo=None):
 	# Your list of words
 	try:
-		words="no-tags"
+		words=["no-tags"]
 		if(repo["topics"] is not None and repo["topics"] is not repo["topics"].isna()):
 			words = repo["topics"].split(",")
 
