@@ -92,8 +92,8 @@ def getTopicEmbedding(repo=None):
 
 		return words, embeddings["embedding"]
 	except Exception as e:
-		print(print(repo["repo"]))
 		print(repo["topics"])
+		print(words)
 		print(e)
 
 
