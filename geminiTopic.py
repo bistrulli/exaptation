@@ -79,17 +79,20 @@ def convertTopicDF():
 
 def getTopicEmbedding(repo=None):
 	# Your list of words
-	words = repo["topics"].split(",")
+	try:
+		words = repo["topics"].split(",")
 
-	# Generate embeddings for the list of words
-	embeddings = genai.embed_content(
-	    model="models/text-embedding-004",
-	    content=words
-	)
-	#for i, embedding in enumerate(embeddings["embedding"]):
-	#    print(f"Embedding for '{words[i]}': {embedding}")
+		# Generate embeddings for the list of words
+		embeddings = genai.embed_content(
+		    model="models/text-embedding-004",
+		    content=words
+		)
 
-	return words, embeddings["embedding"]
+		return words, embeddings["embedding"]
+	except Exception as e:
+		print(print(repo["repo"]))
+		print(repo["topics"])
+		print(e)
 
 
 if __name__ == '__main__':
@@ -105,6 +108,7 @@ if __name__ == '__main__':
 	#st=time.time()
 	#asyncio.run(processParallel(num_chunks,desc))
 	#convertTopicDF()
+
 	topics=pd.read_csv("geminiTopics.csv")
 	analyzed_topics=[]
 	analyzed_embenddings=[]
