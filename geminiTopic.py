@@ -81,7 +81,7 @@ def getTopicEmbedding(repo=None):
 	# Your list of words
 	try:
 		words=["no-tags"]
-		if(repo["topics"] is not None and repo["topics"] is not repo["topics"].isna()):
+		if(repo["topics"] is not None and not repo["topics"].isna()):
 			words = repo["topics"].split(",")
 
 		# Generate embeddings for the list of words
