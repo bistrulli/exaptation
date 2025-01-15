@@ -1,4 +1,4 @@
-import pathlib
+from pathlib import Path
 import textwrap
 import pandas as pd
 import numpy as np
@@ -12,6 +12,9 @@ import os
 import google.generativeai as genai
 import asyncio
 from datetime import datetime
+import pickle
+
+chainPath=Path("/home/ubuntu/chains")
 
 num_processors = os.cpu_count()*10
 model=None
@@ -98,13 +101,61 @@ def getTopicEmbedding(repo=None):
 		print(words)
 		print(e)
 
+def getEmbedding(jsonchain=None):
+    embeddings = []
+    repos = []
+    idx = 0
+    
+    # Outer tqdm to track progress over top-level keys
+    for key, val in tqdm(enumerate(jsonchain), desc="Processing keys"):
+        # Inner tqdm to track progress over levels within each key
+        for lvl, val2 in tqdm(enumerate(jsonchain[val]), desc="Processing levels", leave=False):
+            if val2 != "duration":
+                # Innermost tqdm to track progress over dependencies
+                for dep in tqdm(jsonchain[val][val2], desc="Processing dependencies", leave=False):
+                    if "-->" in dep:
+                        repo_dep = dep.split("-->")[-1].strip()
+                        if repos_topic[repos_topic["repo"] == repo_dep].shape[0] > 0:
+                            repo = repos_topic[repos_topic["repo"] == repo_dep]
+                            embeds = getTopicEmbedding(repo=repo)
+                            embeddings.append(embeds[1][0])
+                            repos.append(repo_dep)
+                            idx += 1
+                            time.sleep(2)
+                            if(idx%100==0):
+                                # Open the file in binary write mode
+                                embeddings_file = open(f'embeddings_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
+                                repos_file = open(f'repos_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
+                                # Save the data
+                                pickle.dump(embeddings, embeddings_file)
+                                pickle.dump(repos, repos_file)
+                                # Close the file manually
+                                embeddings_file.close()
+                                repos_file.close()
+                                print("Data saved successfully!")
+                        else:
+                            # Uncomment to enable logging for repos not found
+                            # print(f"repo {repo_dep} not found")
+                            pass
+    return embeddings, repos
+
+def readJsonChain(chain=None):
+    jsonchain=None
+    if(Path(chain).is_file()):
+        content=chain.read_text()
+        jsonchain = json.loads(content)
+    else:
+        raise ValueError(f"{chain} not found!")
+    return jsonchain
+
+
 
 if __name__ == '__main__':
 	initApi()
 
-	desc=pd.read_csv("en_desc.csv",names=["oldidx","repo","desc"],header=0)
-	desc["repo"]=desc["repo"].apply(lambda x:x.strip())
-	desc["desc"]=desc["desc"].apply(lambda x:x.strip())
+	# desc=pd.read_csv("en_desc.csv",names=["oldidx","repo","desc"],header=0)
+	# desc["repo"]=desc["repo"].apply(lambda x:x.strip())
+	# desc["desc"]=desc["desc"].apply(lambda x:x.strip())
 
 	#model = genai.GenerativeModel('gemini-1.5-flash')
 	#q = queue.Queue()
@@ -113,21 +164,27 @@ if __name__ == '__main__':
 	#asyncio.run(processParallel(num_chunks,desc))
 	#convertTopicDF()
 
-	topics=pd.read_csv("geminiTopics.csv")
-	#df=pd.read_csv("topic_embedding.csv")
-	analyzed_topics=[]
-	analyzed_embenddings=[]
-	results_embenddings=[]
-	try:
-		for i in tqdm(range(topics.shape[0])):
-			repo=topics.iloc[i]
-			words,embeddings=getTopicEmbedding(repo=repo)
-			analyzed_topics+=words
-			analyzed_embenddings+=embeddings
-			time.sleep(1)
-	except Exception as e:
-		print(e)
-	finally:
-		# Create a list of dictionaries with 'repo' and 'topics' keys
-		results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
-		results_embedding.to_csv("topic_embedding.csv",index=False)
+	# topics=pd.read_csv("geminiTopics.csv")
+	# #df=pd.read_csv("topic_embedding.csv")
+	# analyzed_topics=[]
+	# analyzed_embenddings=[]
+	# results_embenddings=[]
+	# try:
+	# 	for i in tqdm(range(topics.shape[0])):
+	# 		repo=topics.iloc[i]
+	# 		words,embeddings=getTopicEmbedding(repo=repo)
+	# 		analyzed_topics+=words
+	# 		analyzed_embenddings+=embeddings
+	# 		time.sleep(1)
+	# except Exception as e:
+	# 	print(e)
+	# finally:
+	# 	# Create a list of dictionaries with 'repo' and 'topics' keys
+	# 	results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
+	# 	results_embedding.to_csv("topic_embedding.csv",index=False)
+
+
+	#initApi()
+	repos_topic=pd.read_csv("geminiTopics.csv")
+	jsonchain=readJsonChain(chain=chainPath/Path("chains_1000_iteration.json"))
+	embeddings,repos=getEmbedding(jsonchain=jsonchain)
