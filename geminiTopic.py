@@ -120,7 +120,7 @@ def getEmbedding(jsonchain=None):
 							repos.append(repo_dep)
 							idx += 1
 							time.sleep(2)
-							if(idx%3==0):
+							if(idx%100==0):
 								# Open the file in binary write mode
 								embeddings_file = open(f'embeddings_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
 								repos_file = open(f'repos_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
@@ -130,7 +130,7 @@ def getEmbedding(jsonchain=None):
 								# Close the file manually
 								embeddings_file.close()
 								repos_file.close()
-								print("Data saved successfully!")
+								#print("Data saved successfully!")
 						else:
 							# Uncomment to enable logging for repos not found
 							# print(f"repo {repo_dep} not found")
