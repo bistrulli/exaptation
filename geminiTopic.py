@@ -123,8 +123,6 @@ def getEmbedding(jsonchain=None):
 							idx += 1
 							time.sleep(2)
 							if(idx%3==0):
-								print(embeddings)
-								print(repos)
 								# Open the file in binary write mode
 								embeddings_file = open(f'embeddings_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
 								repos_file = open(f'repos_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
