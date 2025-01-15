@@ -91,8 +91,8 @@ def getTopicEmbedding(repo=None):
 
 		# Generate embeddings for the list of words
 		embeddings = genai.embed_content(
-		    model="models/text-embedding-004",
-		    content=words
+			model="models/text-embedding-004",
+			content=words
 		)
 
 		return words, embeddings["embedding"]
@@ -102,53 +102,53 @@ def getTopicEmbedding(repo=None):
 		print(e)
 
 def getEmbedding(jsonchain=None):
-    embeddings = []
-    repos = []
-    idx = 0
-    
-    # Outer tqdm to track progress over top-level keys
-    for key, val in tqdm(enumerate(jsonchain), desc="Processing keys"):
-        # Inner tqdm to track progress over levels within each key
-        for lvl, val2 in tqdm(enumerate(jsonchain[val]), desc="Processing levels", leave=False):
-            if val2 != "duration":
-                # Innermost tqdm to track progress over dependencies
-                for dep in tqdm(jsonchain[val][val2], desc="Processing dependencies", leave=False):
-                    if "-->" in dep:
-                        repo_dep = dep.split("-->")[-1].strip()
-                        if repos_topic[repos_topic["repo"] == repo_dep].shape[0] > 0:
-                            repo = repos_topic[repos_topic["repo"] == repo_dep]
-                            embeds = getTopicEmbedding(repo=repo)
-                            embeddings.append(embeds[1][0])
-                            repos.append(repo_dep)
-                            idx += 1
-                            time.sleep(2)
-                            if(idx%3==0):
-                            	print(embeddings)
-                            	print(repos)
-                                # Open the file in binary write mode
-                                embeddings_file = open(f'embeddings_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
-                                repos_file = open(f'repos_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
-                                # Save the data
-                                pickle.dump(embeddings, embeddings_file)
-                                pickle.dump(repos, repos_file)
-                                # Close the file manually
-                                embeddings_file.close()
-                                repos_file.close()
-                                print("Data saved successfully!")
-                        else:
-                            # Uncomment to enable logging for repos not found
-                            # print(f"repo {repo_dep} not found")
-                            pass
-    return embeddings, repos
+	embeddings = []
+	repos = []
+	idx = 0
+	
+	# Outer tqdm to track progress over top-level keys
+	for key, val in tqdm(enumerate(jsonchain), desc="Processing keys"):
+		# Inner tqdm to track progress over levels within each key
+		for lvl, val2 in tqdm(enumerate(jsonchain[val]), desc="Processing levels", leave=False):
+			if val2 != "duration":
+				# Innermost tqdm to track progress over dependencies
+				for dep in tqdm(jsonchain[val][val2], desc="Processing dependencies", leave=False):
+					if "-->" in dep:
+						repo_dep = dep.split("-->")[-1].strip()
+						if repos_topic[repos_topic["repo"] == repo_dep].shape[0] > 0:
+							repo = repos_topic[repos_topic["repo"] == repo_dep]
+							embeds = getTopicEmbedding(repo=repo)
+							embeddings.append(embeds[1][0])
+							repos.append(repo_dep)
+							idx += 1
+							time.sleep(2)
+							if(idx%3==0):
+								print(embeddings)
+								print(repos)
+								# Open the file in binary write mode
+								embeddings_file = open(f'embeddings_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
+								repos_file = open(f'repos_{list(jsonchain.keys())[0].replace("/","_")}.pkl', "wb")
+								# Save the data
+								pickle.dump(embeddings, embeddings_file)
+								pickle.dump(repos, repos_file)
+								# Close the file manually
+								embeddings_file.close()
+								repos_file.close()
+								print("Data saved successfully!")
+						else:
+							# Uncomment to enable logging for repos not found
+							# print(f"repo {repo_dep} not found")
+							pass
+	return embeddings, repos
 
 def readJsonChain(chain=None):
-    jsonchain=None
-    if(Path(chain).is_file()):
-        content=chain.read_text()
-        jsonchain = json.loads(content)
-    else:
-        raise ValueError(f"{chain} not found!")
-    return jsonchain
+	jsonchain=None
+	if(Path(chain).is_file()):
+		content=chain.read_text()
+		jsonchain = json.loads(content)
+	else:
+		raise ValueError(f"{chain} not found!")
+	return jsonchain
 
 
 
