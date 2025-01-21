@@ -257,6 +257,7 @@ if __name__ == '__main__':
 
 	# Dimensione del chunk
 	chunk_size = 100
+	chunks_since_last_save = 0
 
 	# Processamento dei chunk
 	for chunk in tqdm(chunk_list(remaining_topics, chunk_size)):
@@ -271,9 +272,17 @@ if __name__ == '__main__':
 	            "embedding": list(embeddings.values())
 	        })
 	        embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
+	        # Incrementa il contatore dei chunk
+        	chunks_since_last_save += 1
 
-	        # Salva i DataFrame aggiornati nei file CSV
-	        words_df.to_csv(words_csv, index=False)
-	        embeddings_df.to_csv(embeddings_csv, index=False)
+			# Salva i file ogni 100 chunk
+	        if chunks_since_last_save >= 10:
+	            words_df.to_csv(words_csv, index=False)
+	            embeddings_df.to_csv(embeddings_csv, index=False)
+	            print(f"Salvati i risultati parziali dopo {chunks_since_last_save} chunk.")
+	            chunks_since_last_save = 0
 
-	print("Processamento completato.")
+	# Salvataggio finale
+	words_df.to_csv(words_csv, index=False)
+	embeddings_df.to_csv(embeddings_csv, index=False)
+	print("Processamento completato e risultati salvati.")
