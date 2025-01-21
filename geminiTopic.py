@@ -230,7 +230,7 @@ if __name__ == '__main__':
 	#initApi()
 	repos_topic=pd.read_csv("geminiTopics.csv")
 	#jsonchain=readJsonChain(chain=chainPath/Path("chains_1000_iteration.json"))
-	embeddings=get_embeddings_batch_with_backoff(topics=["stronzo"])
+	embeddings=get_embeddings_batch_with_backoff(topics=["stronzo","vacca"])
 	if embeddings:
 		for word, embedding in embeddings.items():
 			print(f"Embedding per '{word}': {embedding}")
