@@ -231,11 +231,11 @@ if __name__ == '__main__':
 	#initApi()
 	repos_topic=pd.read_csv("geminiTopics.csv")
 	# Dividi gli elementi della colonna 'topics' e ottieni un set di tutti gli elementi unici
-	unique_topics = set(
+	unique_topics = list(set(
 	    topic.strip()
 	    for sublist in repos_topic['topics'].dropna().str.split(',')
 	    for topic in sublist
-	)
+	))
 	chunk_size=10
 	for chunk in chunk_list(unique_topics, chunk_size):
 		embeddings=get_embeddings_batch_with_backoff(topics=chunk)
