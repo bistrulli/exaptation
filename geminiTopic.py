@@ -256,7 +256,7 @@ if __name__ == '__main__':
 	remaining_topics = [topic for topic in unique_topics if topic not in processed_topics]
 
 	# Dimensione del chunk
-	chunk_size = 10
+	chunk_size = 100
 
 	# Processamento dei chunk
 	for chunk in tqdm(chunk_list(remaining_topics, chunk_size)):
