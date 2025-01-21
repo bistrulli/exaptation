@@ -232,5 +232,5 @@ if __name__ == '__main__':
 	#jsonchain=readJsonChain(chain=chainPath/Path("chains_1000_iteration.json"))
 	embeddings=get_embeddings_batch_with_backoff(topics=["stronzo"])
 	if embeddings:
-        for word, embedding in embeddings.items():
-            print(f"Embedding per '{word}': {embedding}")
+		for word, embedding in embeddings.items():
+			print(f"Embedding per '{word}': {embedding}")
