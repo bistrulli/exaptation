@@ -44,11 +44,6 @@ def get_embeddings_batch_with_backoff(topics=None, max_retries=10):
 	while retries < max_retries:
 		try:
 			# Chiama l'API per generare embedding
-			#response = gemini.generate_embeddings(input=words)
-			# response = genai.embed_content(
-			# 	model="models/text-embedding-004",
-			# 	content=words
-			# )
 			# Chiama il metodo embed_content per generare gli embedding
 			response = genai.embed_content(
 				model="models/text-embedding-004",
@@ -229,7 +224,9 @@ if __name__ == '__main__':
 
 	#initApi()
 	repos_topic=pd.read_csv("geminiTopics.csv")
-	#jsonchain=readJsonChain(chain=chainPath/Path("chains_1000_iteration.json"))
+	# Dividi gli elementi della colonna 'topics' e ottieni un set di tutti gli elementi unici
+	unique_topics = set(topic.strip() for sublist in repos_topic['topics'].str.split(',') for topic in sublist)
+	print(unique_topics)
 	embeddings=get_embeddings_batch_with_backoff(topics=["stronzo","vacca"])
 	if embeddings:
 		for word, embedding in embeddings.items():
