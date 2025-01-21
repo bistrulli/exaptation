@@ -276,7 +276,7 @@ if __name__ == '__main__':
         	chunks_since_last_save += 1
 
 			# Salva i file ogni 100 chunk
-	        if chunks_since_last_save >= 10:
+	        if chunks_since_last_save >= 100:
 	            words_df.to_csv(words_csv, index=False)
 	            embeddings_df.to_csv(embeddings_csv, index=False)
 	            print(f"Salvati i risultati parziali dopo {chunks_since_last_save} chunk.")
