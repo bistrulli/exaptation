@@ -243,14 +243,14 @@ if __name__ == '__main__':
 
 	# Caricamento dei file esistenti se presenti
 	if os.path.exists(words_csv) and os.path.exists(embeddings_csv):
-	    words_df = pd.read_csv(words_csv)
-	    embeddings_df = pd.read_csv(embeddings_csv)
-	    processed_topics = set(words_df["topic"].tolist())
-	    print(f"Ripreso da {len(processed_topics)} topics già processati.")
+		words_df = pd.read_csv(words_csv)
+		embeddings_df = pd.read_csv(embeddings_csv)
+		processed_topics = set(words_df["topic"].tolist())
+		print(f"Ripreso da {len(processed_topics)} topics già processati.")
 	else:
-	    words_df = pd.DataFrame(columns=["topic"])
-	    embeddings_df = pd.DataFrame(columns=["embedding"])
-	    processed_topics = set()
+		words_df = pd.DataFrame(columns=["topic"])
+		embeddings_df = pd.DataFrame(columns=["embedding"])
+		processed_topics = set()
 
 	# Filtra i topics ancora da elaborare
 	remaining_topics = [topic for topic in unique_topics if topic not in processed_topics]
@@ -261,27 +261,27 @@ if __name__ == '__main__':
 
 	# Processamento dei chunk
 	for chunk in tqdm(chunk_list(remaining_topics, chunk_size)):
-	    embeddings = get_embeddings_batch_with_backoff(topics=chunk)
-	    if embeddings:
-	        # Aggiorna il DataFrame delle parole
-	        new_words_df = pd.DataFrame({"topic": list(embeddings.keys())})
-	        words_df = pd.concat([words_df, new_words_df], ignore_index=True)
+		embeddings = get_embeddings_batch_with_backoff(topics=chunk)
+		if embeddings:
+			# Aggiorna il DataFrame delle parole
+			new_words_df = pd.DataFrame({"topic": list(embeddings.keys())})
+			words_df = pd.concat([words_df, new_words_df], ignore_index=True)
 
-	        # Aggiorna il DataFrame degli embeddings
-	        new_embeddings_df = pd.DataFrame({
-	            "embedding": list(embeddings.values())
-	        })
-	        embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
-	        # Incrementa il contatore dei chunk
-        	chunks_since_last_save += 1
+			# Aggiorna il DataFrame degli embeddings
+			new_embeddings_df = pd.DataFrame({
+				"embedding": list(embeddings.values())
+			})
+			embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
+			# Incrementa il contatore dei chunk
+			chunks_since_last_save += 1
 
 			# Salva i file ogni 100 chunk
-	        if chunks_since_last_save >= 100:
-	            words_df.to_csv(words_csv, index=False)
-	            embeddings_df.to_csv(embeddings_csv, index=False)
-	            print(f"Salvati i risultati parziali dopo {chunks_since_last_save} chunk.")
-	            chunks_since_last_save = 0
-	 	break
+			if chunks_since_last_save >= 100:
+				words_df.to_csv(words_csv, index=False)
+				embeddings_df.to_csv(embeddings_csv, index=False)
+				print(f"Salvati i risultati parziali dopo {chunks_since_last_save} chunk.")
+				chunks_since_last_save = 0
+		break
 
 	# Salvataggio finale
 	words_df.to_csv(words_csv, index=False)
