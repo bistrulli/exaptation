@@ -227,7 +227,7 @@ if __name__ == '__main__':
 	# Dividi gli elementi della colonna 'topics' e ottieni un set di tutti gli elementi unici
 	unique_topics = set(
 	    topic.strip()
-	    for sublist in df['topics'].dropna().str.split(',')
+	    for sublist in repos_topic['topics'].dropna().str.split(',')
 	    for topic in sublist
 	)
 	print(unique_topics)
