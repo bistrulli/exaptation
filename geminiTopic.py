@@ -188,9 +188,9 @@ def readJsonChain(chain=None):
 
 # Funzione per dividere la lista in chunk
 def chunk_list(data, chunk_size):
-    """Divide una lista in chunk di dimensione chunk_size."""
-    for i in range(0, len(data), chunk_size):
-        yield data[i:i + chunk_size]
+	"""Divide una lista in chunk di dimensione chunk_size."""
+	for i in range(0, len(data), chunk_size):
+		yield data[i:i + chunk_size]
 
 
 
@@ -214,27 +214,27 @@ if __name__ == '__main__':
 	# analyzed_embenddings=[]
 	# results_embenddings=[]
 	# try:
-	# 	for i in tqdm(range(topics.shape[0])):
-	# 		repo=topics.iloc[i]
-	# 		words,embeddings=getTopicEmbedding(repo=repo)
-	# 		analyzed_topics+=words
-	# 		analyzed_embenddings+=embeddings
-	# 		time.sleep(1)
+	#   for i in tqdm(range(topics.shape[0])):
+	#       repo=topics.iloc[i]
+	#       words,embeddings=getTopicEmbedding(repo=repo)
+	#       analyzed_topics+=words
+	#       analyzed_embenddings+=embeddings
+	#       time.sleep(1)
 	# except Exception as e:
-	# 	print(e)
+	#   print(e)
 	# finally:
-	# 	# Create a list of dictionaries with 'repo' and 'topics' keys
-	# 	results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
-	# 	results_embedding.to_csv("topic_embedding.csv",index=False)
+	#   # Create a list of dictionaries with 'repo' and 'topics' keys
+	#   results_embedding=pd.DataFrame([{'topic': topic, 'embedding': analyzed_embenddings[i]} for i, topic in enumerate(analyzed_topics)],columns=["topic","embedding"])
+	#   results_embedding.to_csv("topic_embedding.csv",index=False)
 
 
 	initApi()
 	repos_topic=pd.read_csv("geminiTopics.csv")
 	# Dividi gli elementi della colonna 'topics' e ottieni un set di tutti gli elementi unici
 	unique_topics = list(set(
-	    topic.strip()
-	    for sublist in repos_topic['topics'].dropna().str.split(',')
-	    for topic in sublist
+		topic.strip()
+		for sublist in repos_topic['topics'].dropna().str.split(',')
+		for topic in sublist
 	))
 	chunk_size=10
 	# File di output
@@ -251,23 +251,23 @@ if __name__ == '__main__':
 		embeddings=get_embeddings_batch_with_backoff(topics=chunk)
 		if embeddings:
 			#for word, embedding in embeddings.items():
-			#	print(f"Embedding per '{word}': {embedding}")
+			#   print(f"Embedding per '{word}': {embedding}")
 
 			# Aggiorna il DataFrame delle parole
-	        new_words_df = pd.DataFrame({"topic": list(embeddings.keys())})
-	        words_df = pd.concat([words_df, new_words_df], ignore_index=True)
+			new_words_df = pd.DataFrame({"topic": list(embeddings.keys())})
+			words_df = pd.concat([words_df, new_words_df], ignore_index=True)
 
-	        # Aggiorna il DataFrame degli embeddings
-	        new_embeddings_df = pd.DataFrame({
-	            "topic": list(embeddings.keys()),
-	            "embedding": list(embeddings.values())
-	        })
-	        embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
-	        
-	        # Salva i DataFrame aggiornati nei file CSV
-	        words_df.to_csv(words_csv, index=False)
-	        embeddings_df.to_csv(embeddings_csv, index=False)
-    
+			# Aggiorna il DataFrame degli embeddings
+			new_embeddings_df = pd.DataFrame({
+				"topic": list(embeddings.keys()),
+				"embedding": list(embeddings.values())
+			})
+			embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
+			
+			# Salva i DataFrame aggiornati nei file CSV
+			words_df.to_csv(words_csv, index=False)
+			embeddings_df.to_csv(embeddings_csv, index=False)
+	
 		break
 
 
@@ -275,22 +275,22 @@ if __name__ == '__main__':
 
 	# Processamento dei chunk
 	for chunk in chunk_list(unique_topics, chunk_size):
-	    embeddings = get_embeddings_batch_with_backoff(topics=chunk)
-	    
-	    if embeddings:
-	        # Aggiorna il DataFrame delle parole
-	        new_words_df = pd.DataFrame({"word": list(embeddings.keys())})
-	        words_df = pd.concat([words_df, new_words_df], ignore_index=True)
-	        
-	        # Aggiorna il DataFrame degli embeddings
-	        new_embeddings_df = pd.DataFrame({
-	            "word": list(embeddings.keys()),
-	            "embedding": list(embeddings.values())
-	        })
-	        embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
-	        
-	        # Salva i DataFrame aggiornati nei file CSV
-	        words_df.to_csv(words_csv, index=False)
-	        embeddings_df.to_csv(embeddings_csv, index=False)
-	    
-	    print(f"Processed chunk: {chunk}")
+		embeddings = get_embeddings_batch_with_backoff(topics=chunk)
+		
+		if embeddings:
+			# Aggiorna il DataFrame delle parole
+			new_words_df = pd.DataFrame({"word": list(embeddings.keys())})
+			words_df = pd.concat([words_df, new_words_df], ignore_index=True)
+			
+			# Aggiorna il DataFrame degli embeddings
+			new_embeddings_df = pd.DataFrame({
+				"word": list(embeddings.keys()),
+				"embedding": list(embeddings.values())
+			})
+			embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
+			
+			# Salva i DataFrame aggiornati nei file CSV
+			words_df.to_csv(words_csv, index=False)
+			embeddings_df.to_csv(embeddings_csv, index=False)
+		
+		print(f"Processed chunk: {chunk}")
