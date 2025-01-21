@@ -281,6 +281,7 @@ if __name__ == '__main__':
 	            embeddings_df.to_csv(embeddings_csv, index=False)
 	            print(f"Salvati i risultati parziali dopo {chunks_since_last_save} chunk.")
 	            chunks_since_last_save = 0
+	 	break
 
 	# Salvataggio finale
 	words_df.to_csv(words_csv, index=False)
