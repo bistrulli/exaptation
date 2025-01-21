@@ -54,9 +54,8 @@ def get_embeddings_batch_with_backoff(topics=None, max_retries=10):
 				model="models/text-embedding-004",
 				content=topics
 			)
-			print(response)
 			# Estrai gli embedding e associa ogni contenuto al suo embedding
-			embeddings = {content: embedding for content, embedding in zip(topics, response['embeddings'])}
+			embeddings = {content: embedding for content, embedding in zip(topics, response['embedding'])}
 			return embeddings
 		except Exception as e:
 			if "429" in str(e):  # Controlla se si tratta di un errore di rate limit
