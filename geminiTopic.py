@@ -186,6 +186,12 @@ def readJsonChain(chain=None):
 		raise ValueError(f"{chain} not found!")
 	return jsonchain
 
+# Funzione per dividere la lista in chunk
+def chunk_list(data, chunk_size):
+    """Divide una lista in chunk di dimensione chunk_size."""
+    for i in range(0, len(data), chunk_size):
+        yield data[i:i + chunk_size]
+
 
 
 if __name__ == '__main__':
@@ -230,8 +236,10 @@ if __name__ == '__main__':
 	    for sublist in repos_topic['topics'].dropna().str.split(',')
 	    for topic in sublist
 	)
-	print(unique_topics)
-	embeddings=get_embeddings_batch_with_backoff(topics=["stronzo","vacca"])
-	if embeddings:
-		for word, embedding in embeddings.items():
-			print(f"Embedding per '{word}': {embedding}")
+	chunk_size=10
+	for chunk in chunk_list(unique_topics, chunk_size):
+		embeddings=get_embeddings_batch_with_backoff(topics=chunk)
+		if embeddings:
+			for word, embedding in embeddings.items():
+				print(f"Embedding per '{word}': {embedding}")
+		break
