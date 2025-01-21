@@ -280,8 +280,10 @@ if __name__ == '__main__':
 				words_df.to_csv(words_csv, index=False)
 				embeddings_df.to_csv(embeddings_csv, index=False)
 				print(f"Salvati i risultati parziali dopo {chunks_since_last_save} chunk.")
+				print(f"Numero topic processati {words_df.shape[0]} su {len(unique_topics)} ({words_df.shape[0]*100.0/float(len(unique_topics))})")
+				if(words_df.shape[0] != embeddings_df.shape[0]):
+					raise ValueError(f"Numero topic processati non coincide con il numero degli embeddings salvati {words_df.shape[0]} vs {embeddings_df.shape[0]}")
 				chunks_since_last_save = 0
-		break
 
 	# Salvataggio finale
 	words_df.to_csv(words_csv, index=False)
