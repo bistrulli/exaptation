@@ -24,6 +24,53 @@ def initApi():
 	GOOGLE_API_KEY=var = os.environ['GOOGLE_API_KEY']
 	genai.configure(api_key=GOOGLE_API_KEY)
 
+def get_embeddings_batch_with_backoff(topics=None, max_retries=10):
+	"""
+	Genera gli embedding per un batch di parole utilizzando la Google Gemini API con gestione del rate-limit.
+	
+	Args:
+		words (list): Lista di parole per le quali generare gli embedding.
+		max_retries (int): Numero massimo di tentativi in caso di errore 429.
+	
+	Returns:
+		dict: Un dizionario con ogni parola e il suo embedding associato.
+	"""
+	if(topics is None):
+		raise TypeError(f"topic must not be None.") 
+
+	retries = 0
+	while retries < max_retries:
+		try:
+			# Chiama l'API per generare embedding
+			#response = gemini.generate_embeddings(input=words)
+			# response = genai.embed_content(
+			# 	model="models/text-embedding-004",
+			# 	content=words
+			# )
+			# Chiama il metodo embed_content per generare gli embedding
+			response = genai.embed_content(
+				model="models/text-embedding-004",
+				content=topics
+			)
+			# Estrai gli embedding e associa ogni contenuto al suo embedding
+			embeddings = {content: embedding for content, embedding in zip(contents, response['embeddings'])}
+			return embeddings
+			# Estrai gli embedding e associa ogni parola al suo embedding
+			embeddings = {word: embedding for word, embedding in zip(words, response['embeddings'])}
+			return embeddings
+		except Exception as e:
+			if "429" in str(e):  # Controlla se si tratta di un errore di rate limit
+				wait_time = 2 ** retries  # Backoff esponenziale: 2^retries secondi
+				print(f"Errore 429: rate limit superato. Riprovo tra {wait_time} secondi...")
+				time.sleep(wait_time)
+				retries += 1
+			else:
+				# Logga altri errori e interrompi
+				print(f"Errore durante la generazione degli embedding: {e}")
+				break
+	print("Numero massimo di tentativi superato. Interrotto.")
+	return None
+
 def parseTopic(rawtopics):
 	topics=[]
 	try:
@@ -80,13 +127,11 @@ def convertTopicDF():
 	df = pd.DataFrame(np.array(data),columns=["repo","topics"])
 	df.to_csv("geminiTopics.csv")
 
-def getTopicEmbedding(repo=None):
-	# Your list of words
-	try:
-		words=["no-tags"]
-		if(repo["topics"] is not None and type(repo["topics"])==str):
-			words = repo["topics"].split(",")
+def getTopicEmbedding(topics=None):
+	if(topics is None):
+		raise TypeError(f"topic must not be None.") 
 
+	try:
 		# Generate embeddings for the list of words
 		embeddings = genai.embed_content(
 			model="models/text-embedding-004",
@@ -184,5 +229,5 @@ if __name__ == '__main__':
 
 	#initApi()
 	repos_topic=pd.read_csv("geminiTopics.csv")
-	jsonchain=readJsonChain(chain=chainPath/Path("chains_1000_iteration.json"))
-	embeddings,repos=getEmbedding(jsonchain=jsonchain)
+	#jsonchain=readJsonChain(chain=chainPath/Path("chains_1000_iteration.json"))
+	get_embeddings_batch_with_backoff(topics=["stronzo"])
