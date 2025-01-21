@@ -13,6 +13,8 @@ import google.generativeai as genai
 import asyncio
 from datetime import datetime
 import pickle
+import traceback
+
 
 chainPath=Path("/home/ubuntu/chains")
 
@@ -63,6 +65,7 @@ def get_embeddings_batch_with_backoff(topics=None, max_retries=10):
 				retries += 1
 			else:
 				# Logga altri errori e interrompi
+				traceback.print_exc()
 				print(f"Errore durante la generazione degli embedding: {e}")
 				break
 	print("Numero massimo di tentativi superato. Interrotto.")
