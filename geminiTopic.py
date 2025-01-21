@@ -246,12 +246,9 @@ if __name__ == '__main__':
 	embeddings_df = pd.DataFrame(columns=["embedding"])
 
 	# Processamento dei chunk
-	for chunk in chunk_list(unique_topics, chunk_size):
+	for chunk in tqdm(chunk_list(unique_topics, chunk_size)):
 		embeddings=get_embeddings_batch_with_backoff(topics=chunk)
 		if embeddings:
-			# for word, embedding in embeddings.items():
-			#    print(f"Embedding per '{word}'")
-
 			# Aggiorna il DataFrame delle parole
 			new_words_df = pd.DataFrame({"topic": list(embeddings.keys())})
 			words_df = pd.concat([words_df, new_words_df], ignore_index=True)
@@ -261,7 +258,7 @@ if __name__ == '__main__':
 				"embedding": list(embeddings.values())
 			})
 			embeddings_df = pd.concat([embeddings_df, new_embeddings_df], ignore_index=True)
-			
+
 			# Salva i DataFrame aggiornati nei file CSV
 			words_df.to_csv(words_csv, index=False)
 			embeddings_df.to_csv(embeddings_csv, index=False)
