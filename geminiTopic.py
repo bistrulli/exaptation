@@ -240,7 +240,6 @@ if __name__ == '__main__':
 		for topic in sublist
 	))
 	unique_topics=normalize_words(unique_topics)
-	chunk_size=10
 	# File di output
 	words_csv = "topics_processed_norm.csv"
 	embeddings_csv = "topic_embeddings_norm.csv"
