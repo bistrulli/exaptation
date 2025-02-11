@@ -192,6 +192,9 @@ def chunk_list(data, chunk_size):
 	for i in range(0, len(data), chunk_size):
 		yield data[i:i + chunk_size]
 
+def normalize_words(words):
+    normalized = [re.sub(r'[-_\s]+', '-', word.lower()) for word in words]
+    return normalized
 
 
 if __name__ == '__main__':
@@ -236,10 +239,11 @@ if __name__ == '__main__':
 		for sublist in repos_topic['topics'].dropna().str.split(',')
 		for topic in sublist
 	))
+	unique_topics=normalize_words(unique_topics)
 	chunk_size=10
 	# File di output
-	words_csv = "topics_processed.csv"
-	embeddings_csv = "topic_embeddings.csv"
+	words_csv = "topics_processed_norm.csv"
+	embeddings_csv = "topic_embeddings_norm.csv"
 
 	# Caricamento dei file esistenti se presenti
 	if os.path.exists(words_csv) and os.path.exists(embeddings_csv):
