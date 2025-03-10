@@ -1,5 +1,4 @@
 import logging  # Nuovo import per il logging
-import csv        # Nuovo import per salvataggio incrementale
 import requests
 import base64
 from pathlib import Path
@@ -94,39 +93,32 @@ gittoken = os.getenv('GITTOKEN')
 
 desc = pd.read_csv("en_desc.csv")
 
-# Costruisci la matrice e l'insieme delle repo già processate
-csv_file = "repo_data.csv"
-repo_data_matrix = []
-processed_set = set()
+# Carica i dati già salvati usando pandas ed estrai le repo processate
+csv_file = "repo_custom_data.csv"
 if os.path.exists(csv_file):
     existing_df = pd.read_csv(csv_file)
-    repo_data_matrix = existing_df.to_dict("records")
     processed_set = set(existing_df["repo_id"])
+else:
+    processed_set = set()
 
-# Apri il file CSV in modalità append per salvare i risultati incrementali
-with open(csv_file, "a", newline="", encoding="utf-8") as f:
-    writer = csv.DictWriter(f, fieldnames=["repo_id", "org_name", "pull_request_count"])
-    if os.stat(csv_file).st_size == 0:
-        writer.writeheader()
-    for i in tqdm(range(desc.shape[0])):
-        owner = desc.iloc[i]["id"].split("/")[0].strip()
-        repo = desc.iloc[i]["id"].split("/")[1].strip()
-        repo_id = f"{owner}/{repo}"
-        if repo_id in processed_set:
-            continue
-        org_name = getOrgName(owner, repo, token=gittoken)
-        if org_name:
-            logging.info(f"Repository {repo_id} appartiene all'organizzazione: {org_name}")
-        else:
-            logging.info(f"Repository {repo_id} non ha un'organizzazione associata.")
-        pr_count = getPullRequestCount(owner, repo, token=gittoken)
-        logging.info(f"Repository {repo_id} ha {pr_count} pull requests.")
-        # Aggiungi i dati alla matrice e salva in maniera incrementale
-        row = {
-            "repo_id": repo_id,
-            "org_name": org_name,
-            "pull_request_count": pr_count
-        }
-        writer.writerow(row)
-        f.flush()
+for i in tqdm(range(desc.shape[0])):
+    owner = desc.iloc[i]["id"].split("/")[0].strip()
+    repo = desc.iloc[i]["id"].split("/")[1].strip()
+    repo_id = f"{owner}/{repo}"
+    if repo_id in processed_set:
+        continue
+    org_name = getOrgName(owner, repo, token=gittoken)
+    if org_name:
+        logging.info(f"Repository {repo_id} appartiene all'organizzazione: {org_name}")
+    else:
+        logging.info(f"Repository {repo_id} non ha un'organizzazione associata.")
+    pr_count = getPullRequestCount(owner, repo, token=gittoken)
+    logging.info(f"Repository {repo_id} ha {pr_count} pull requests.")
+    # Crea un DataFrame per la singola riga e salvalo in modalità append
+    new_row = pd.DataFrame([{
+        "repo_id": repo_id,
+        "org_name": org_name,
+        "pull_request_count": pr_count
+    }])
+    new_row.to_csv(csv_file, mode='a', index=False, header=not os.path.exists(csv_file) or os.stat(csv_file).st_size == 0)
 
