@@ -98,5 +98,5 @@ for i in tqdm(range(desc.shape[0])):
     else:
         print(f"Repository {owner}/{repo} non ha un'organizzazione associata.")
     pr_data = getPullRequestCount(owner, repo, token=gittoken)
-    print(f"Repository {owner}/{repo} ha {len(pr_data)} pull requests.")
+    print(f"Repository {owner}/{repo} ha {pr_data} pull requests.")
 
