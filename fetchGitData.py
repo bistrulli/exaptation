@@ -45,18 +45,28 @@ def getOrgName(owner, repo, token=None):
     return None
 
 def getPullRequests(owner, repo, token=None):
-    url = f"https://api.github.com/repos/{owner}/{repo}/pulls?state=all"
-    headers = {
-        "Accept": "application/vnd.github.v3+json",
-        "Authorization": f"token {token}"
-    }
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Failed to fetch pull requests for {owner}/{repo}: {response.status_code}")
-        print(response.text)
-        return []
+    # Nuova implementazione per ottenere tutte le pull requests tramite paginazione
+    all_prs = []
+    page = 1
+    per_page = 100  # massimo consentito dall'API GitHub
+    while True:
+        url = f"https://api.github.com/repos/{owner}/{repo}/pulls?state=all&page={page}&per_page={per_page}"
+        headers = {
+            "Accept": "application/vnd.github.v3+json",
+            "Authorization": f"token {token}"
+        }
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            prs = response.json()
+            all_prs.extend(prs)
+            if len(prs) < per_page:
+                break
+            page += 1
+        else:
+            print(f"Failed to fetch pull requests for {owner}/{repo}: {response.status_code}")
+            print(response.text)
+            break
+    return all_prs
 
 gittoken=os.getenv('GITTOKEN')
 
