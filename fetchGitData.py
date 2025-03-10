@@ -68,6 +68,21 @@ def getPullRequests(owner, repo, token=None):
             break
     return all_prs
 
+def getPullRequestCount(owner, repo, token=None):
+    # Nuova funzione che utilizza l'endpoint di ricerca per ottenere il conteggio delle pull requests
+    url = f"https://api.github.com/search/issues?q=repo:{owner}/{repo}+is:pr"
+    headers = {
+        "Accept": "application/vnd.github.v3+json",
+        "Authorization": f"token {token}"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        return data.get("total_count", 0)
+    else:
+        print(f"Failed to fetch pull request count for {owner}/{repo}: {response.status_code}")
+        return 0
+
 gittoken=os.getenv('GITTOKEN')
 
 desc=pd.read_csv("en_desc.csv")
@@ -82,6 +97,6 @@ for i in tqdm(range(desc.shape[0])):
         print(f"Repository {owner}/{repo} appartiene all'organizzazione: {org_name}")
     else:
         print(f"Repository {owner}/{repo} non ha un'organizzazione associata.")
-    pr_data = getPullRequests(owner, repo, token=gittoken)
+    pr_data = getPullRequestCount(owner, repo, token=gittoken)
     print(f"Repository {owner}/{repo} ha {len(pr_data)} pull requests.")
 
