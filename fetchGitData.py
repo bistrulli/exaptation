@@ -81,13 +81,24 @@ def getPullRequestCount(owner, repo, token=None):
         "Accept": "application/vnd.github.v3+json",
         "Authorization": f"token {token}"
     }
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        return data.get("total_count", 0)
-    else:
-        logging.error(f"Failed to fetch pull request count for {owner}/{repo}: {response.status_code}")
-        return 0
+    while True:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            return data.get("total_count", 0)
+        elif response.status_code == 403:
+            reset = response.headers.get("X-RateLimit-Reset")
+            if reset:
+                wait_seconds = int(reset) - int(time.time()) + 5  # aggiunge un margine di 5 secondi
+                if wait_seconds > 0:
+                    logging.info(f"Rate limit exceeded for {owner}/{repo}. Sleeping for {wait_seconds} seconds.")
+                    time.sleep(wait_seconds)
+                    continue
+            logging.error(f"Failed to fetch pull request count for {owner}/{repo}: {response.status_code}")
+            return 0
+        else:
+            logging.error(f"Failed to fetch pull request count for {owner}/{repo}: {response.status_code}")
+            return 0
 
 gittoken = os.getenv('GITTOKEN')
 
